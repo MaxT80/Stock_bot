@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<head>
+  <script src="https://cdn.anychart.com/releases/8.2.0/js/anychart-base.min.js"></script>
+  <script src="https://cdn.anychart.com/releases/8.2.0/js/anychart-ui.min.js"></script>
+  <script src="https://cdn.anychart.com/releases/8.2.0/js/anychart-annotations.min.js"></script>
+  <script src="https://cdn.anychart.com/releases/8.2.0/js/anychart-exports.min.js"></script>
+  <script src="https://cdn.anychart.com/releases/8.2.0/js/anychart-stock.min.js"></script>
+  <script src="https://cdn.anychart.com/releases/8.2.0/js/anychart-data-adapter.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.anychart.com/releases/8.2.0/css/anychart-ui.min.css" />
+  <link rel="stylesheet" href="https://cdn.anychart.com/releases/8.2.0/fonts/css/anychart-font.min.css" />
+  <style>
+    html, body, #container {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    },
+    #ac_rect_1d{
+    font-size: 300px;
+    }
+  </style>
+</head>
+<body>
+    <div id="container">
+        <script type="text/javascript">
+        anychart.onDocumentReady(function() {
+        anychart.data.loadCsvFile('{{data_link}}', function(data) {
+        var dataTable = anychart.data.table();
+        dataTable.addData(data);
+
+        // map loaded data for the ohlc series
+        var mapping = dataTable.mapAs({
+          'open': 3,
+          'high': 5,
+          'low': 4,
+          'close': 6,
+          'value': 2
+        });
+
+        // create stock chart
+        var chart = anychart.stock();
+
+        // set chart title
+        chart.title('{{title_name}}');
+
+        // create first plot on the chart and set settings
+        var plot = chart.plot(0);
+        plot.height('75%')
+          .yGrid(true)
+          .xGrid(true)
+          .yMinorGrid(true)
+          .xMinorGrid(true);
+
+        // create candlestick series
+        var series = plot.candlestick(mapping);
+        series.name('{{name}}');
+        series.legendItem().iconType('rising-falling');
+
+        // create EMA indicators with period 20 and show as column on the second plot
+        var mappings = dataTable.mapAs({'value': 6});
+        var ema = plot.ema(mappings);
+        ema.series().stroke('1.5 #455a64');
+
+        // access the annotations() object of the plot to work with annotations
+        var controller = plot.annotations();
+
+        // create a Horizontal Line annotation
+        var horizontalLine1 = controller.horizontalLine();
+        horizontalLine1.valueAnchor({{support}});
+        var horizontalLine2 = controller.horizontalLine();
+        horizontalLine2.valueAnchor({{resistance}}).stroke("#006600");
+
+
+        // create second plot
+        var volumePlot = chart.plot(1);
+        // set yAxis labels formatter
+        volumePlot.yAxis().labels().format('{{ '{%' }}Value}{scale:(100000)(1)|(k)}');
+        // set crosshair y-label formatter
+        volumePlot.crosshair().yLabel().format('{{ '{%' }}Value}{scale:(100000)(1)|(k)}');
+
+        // create volume series on the plot
+        var volumeSeries = volumePlot.column(mapping);
+        // set series settings
+        volumeSeries.name('Volume');
+
+        // create scroller series with mapped data
+        chart.scroller().area(mapping);
+
+        // set container id for the chart
+        chart.container('container');
+        // initiate chart drawing
+        chart.draw();
+
+      });
+    });
+    </script>
+    </div>
+</body>
+</html>
