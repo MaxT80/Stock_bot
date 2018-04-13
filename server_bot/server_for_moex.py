@@ -1,4 +1,6 @@
 from flask import Flask, render_template, abort
+from moex_bot.stock_robot.calculation_of_levels import calculation
+
 
 flask_app = Flask(__name__)
 stock_list = ['AFLT', 'GAZP', 'SBER', 'MFON']
@@ -13,11 +15,12 @@ def index():
 def stock_info(name):
     if name not in stock_list:  # имя сравнивает из списка если нет, выдает ошибку
         abort(404)
-
+    levels = calculation(name)  # функция вычесляет уровни
     return render_template('stock_info_moex.html',
                            title='Sock  {}'.format(name), link='{}  Chart'.format(name),
                            name=name,
-                           support=220, resistance=190,
+                           support_1=levels[2], support_2=levels[1], support_3=levels[0],
+                           resistance_1=levels[3], resistance_2=levels[4], resistance_3=levels[5],
                            stop=3)
 
 
@@ -25,11 +28,11 @@ def stock_info(name):
 def stock_chart(name):
     if name not in stock_list:
         abort(404)
-
+    levels = calculation(name)
     return render_template('stock_chart_moex.html',
                            data_link='/static/{}.csv'.format(name),
                            title_name='{} stock MOEX'.format(name), name=name,
-                           support=220, resistance=190)
+                           support=levels[2], resistance=levels[3])
 
 
 if __name__ == "__main__":
