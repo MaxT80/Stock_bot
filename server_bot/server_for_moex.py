@@ -1,8 +1,9 @@
-from flask import Flask, render_template, abort
-from moex_bot.server_bot.calculation_of_levels import calculation
+from flask import render_template, abort
+
+from core import flask_app
+from calculation_of_levels import calculation
 
 
-flask_app = Flask(__name__)
 stock_list = ['AFLT', 'GAZP', 'SBER', 'MFON']
 
 
