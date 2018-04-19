@@ -1,4 +1,4 @@
-from moex_bot.server_bot.db_moex import Prise
+from db_moex import Prise
 
 name = ['AFLT', 'GAZP', 'SBER', 'MFON']
 

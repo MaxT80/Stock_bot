@@ -1,4 +1,4 @@
-from moex_bot.server_bot.filter_to_calculation import filter_to
+from filter_to_calculation import filter_to
 
 
 # расчет уровней за прошедшую неделю делаеться в субботу
