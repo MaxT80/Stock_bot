@@ -1,20 +1,10 @@
-from sqlalchemy import create_engine, Column, Integer, String, DateTime, ForeignKey
-from sqlalchemy.orm import scoped_session, sessionmaker, relationship
-from sqlalchemy.ext.declarative import declarative_base
+from core import flask_app, db
 
-engine = create_engine('sqlite:///moex_base.db')
-
-db_session = scoped_session(sessionmaker(bind=engine))
-
-Base = declarative_base()
-Base.query = db_session.query_property()
-
-
-class Stock(Base):
+class Stock(db.Model):
     __tablename__ = 'stock_ticker'
-    id = Column(Integer, primary_key=True)
-    stock_name = Column(String(5), unique=True)
-    stock_price = relationship('Prise', backref='stocks')
+    id = db.Column(db.Integer, primary_key=True)
+    stock_name = db.Column(db.String(5), unique=True)
+    stock_price = db.relationship('Prise', backref='stocks')
 
     def __init__(self, stock_name=None):
         self.stock_name = stock_name
@@ -23,17 +13,17 @@ class Stock(Base):
         return '<Stock {} >'.format(self.stock_name)
 
 
-class Prise(Base):
+class Prise(db.Model):
     __tablename__ = 'stock_price'
-    id = Column(Integer, primary_key=True)
-    tradedate = Column(DateTime)
-    secid = Column(String(5))
-    value = Column(Integer)
-    opens = Column(Integer)
-    low = Column(Integer)
-    high = Column(Integer)
-    close = Column(Integer)
-    stock_ticker_id = Column(Integer, ForeignKey('stock_ticker.id'))
+    id = db.Column(db.Integer, primary_key=True)
+    tradedate = db.Column(db.DateTime)
+    secid = db.Column(db.String(5))
+    value = db.Column(db.Integer)
+    opens = db.Column(db.Integer)
+    low = db.Column(db.Integer)
+    high = db.Column(db.Integer)
+    close = db.Column(db.Integer)
+    stock_ticker_id = db.Column(db.Integer, db.ForeignKey('stock_ticker.id'))
 
     def __init__(self, tradedate=None, secid=None, value=None,
                  opens=None, low=None, high=None, close=None, stock_ticker_id=None):
@@ -52,4 +42,5 @@ class Prise(Base):
 
 
 if __name__ == "__main__":
-    Base.metadata.create_all(bind=engine)
+    with flask_app.app_context():
+        db.create_all()
