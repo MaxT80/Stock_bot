@@ -1,18 +1,9 @@
-<<<<<<< HEAD:server_for_moex.py
 from datetime import datetime
-from flask import Flask, render_template, abort
-from moex_bot.calculation_of_levels import calculation
-
-flask_app = Flask(__name__)
-
-=======
 from flask import render_template, abort
 
 from core import flask_app
 from calculation_of_levels import calculation
 
-
->>>>>>> 3b8dcb4c271b9caeeb1795eedb7a9004c4e92d0a:server_bot/server_for_moex.py
 stock_list = ['AFLT', 'GAZP', 'SBER', 'MFON']
 
 
