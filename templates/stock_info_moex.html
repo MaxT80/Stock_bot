@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Stock Bot</title>
+      <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+      <link href="/static/css/main_info.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+      <div class="header"><h1>Stock Bot</h1>
+        <div class="menu">{{title}}</div>
+          <div class="list-group">
+            <a href="/{{name}}_chart" class="list-group-item active">
+            <h3 class="list-group-item-head">{{link}}</h3>
+            </a>
+          </div>
+        <div class="row-three">
+              <div class="list-group">
+                  <h4 class="list-group-item-heading">Support level</h4>
+                  <p class="list-group-item-text">{{support_1}}</p>
+                  <p class="list-group-item-text">{{support_2}}</p>
+                  <p class="list-group-item-text">{{support_3}}</p>
+              </div>
+              <div class="list-group">
+                  <h4 class="list-group-item-heading">Resistance level</h4>
+                  <p class="list-group-item-text">{{resistance_1}}</p>
+                  <p class="list-group-item-text">{{resistance_2}}</p>
+                  <p class="list-group-item-text">{{resistance_3}}</p>
+              </div>
+              <div class="list-group">
+                  <h4 class="list-group-item-heading">Stop-loss</h4>
+                  <p class="list-group-item-text">{{stop}}</p>
+              </div>
+        </div>
+     </div>
+    </div>
+  <div class="footer-clock"><h>{{clock}}</h></div>
+  <div class="footer">Торговля на бирже связана с высокими рисками</div>
+  </body>
+</html>
